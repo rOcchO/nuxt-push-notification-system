@@ -40,6 +40,7 @@ export default defineNitroPlugin(() => {
       )
 
       let globalSuccess = false
+      let noUserSubscription = true
 
       // 3) For each device (user)
       for (const u of usersRes.rows) {
@@ -47,6 +48,13 @@ export default defineNitroPlugin(() => {
           `SELECT * FROM push_subscriptions WHERE user_id = $1`,
           [u.user_id],
         )
+
+        // If no subcription from user for this channel, skip notification push
+        if (subsRes.rowCount === 0) {
+          console.log(`[BullMQ] No subscriptions for notification ${notification_id}, skipping`)
+          continue
+        }
+        noUserSubscription = false
 
         // 4) For each user subscription
         for (const s of subsRes.rows) {
@@ -90,6 +98,11 @@ export default defineNitroPlugin(() => {
             )
           }
         }
+      }
+
+      if (noUserSubscription) {
+        console.log(`[BullMQ] No subscriptions at all for notification ${notification_id}, skipping`)
+        return
       }
 
       // 5) If one delivery is succeded, set notification as sent

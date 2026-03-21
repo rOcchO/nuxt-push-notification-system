@@ -2,10 +2,10 @@ import { getDb } from '../../utils/dbClient'
 
 // Delete push subcription
 export default defineEventHandler(async (event) => {
-  const { endpoint } = await readBody(event)
+  const { user_id } = await readBody(event)
 
-  if (!endpoint) {
-    throw createError({ statusCode: 400, statusMessage: "Missing endpoint" })
+  if (!user_id) {
+    throw createError({ statusCode: 400, statusMessage: "Missing user ID" })
   }
 
   const db = getDb()
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     WHERE endpoint = $1
     RETURNING id
     `,
-    [endpoint],
+    [user_id],
   )
 
   return {
