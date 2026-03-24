@@ -153,6 +153,6 @@ VAPID_PRIVATE_KEY=<your_private_key>
 
 `pnpm dev`
 
-3. Check Bull board on on http://localhost:3030/admin/queues (optional)
+3. Check Bull board on http://localhost:3030/admin/queues (optional)
   
 
