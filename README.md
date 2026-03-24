@@ -32,9 +32,11 @@ Before running the project, ensure you have:
 
 ## Architecture overview
 
+```
 Browser  →  Nuxt API  →  PostgreSQL
    ↑            ↓
 Service Worker ← Web Push ← Worker (BullMQ) ← Redis
+```
 
 ---
 
